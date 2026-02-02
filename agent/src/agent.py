@@ -8,12 +8,19 @@ from .prompts import FINANCE_SYSTEM_PROMPT
 
 
 def create_llm():
+    # Return ChatOllama() to use a local LLM.
+    # FYI if you run it locally on a CPU it's SLOOOOOOW.
+
     # return ChatOllama(
     #     model=OLLAMA_MODEL,
     #     base_url=OLLAMA_BASE_URL,
     #     temperature=0,
     #     num_ctx=32768,
     # )
+
+    # Return ChatAnthropic() to use a cloud LLM (Claude Haiku)
+    # Requires ANTHROPIC_API_KEY to be set in local env
+
     return ChatAnthropic(
         model=ANTHROPIC_MODEL,
         temperature=0
