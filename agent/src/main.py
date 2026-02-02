@@ -38,6 +38,7 @@ async def chat(request: ChatRequest):
         response = await run_agent_query(request.message)
         return ChatResponse(response=response)
     except Exception as e:
+        print(e)
         raise HTTPException(status_code=500, detail=str(e))
 
 

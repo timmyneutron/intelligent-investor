@@ -1,17 +1,22 @@
+from langchain_anthropic import ChatAnthropic
 from langchain_ollama import ChatOllama
 from langchain_mcp_adapters.client import MultiServerMCPClient
 from langgraph.prebuilt import create_react_agent
 
-from .config import MCP_SERVER_URL, OLLAMA_MODEL, OLLAMA_BASE_URL
+from .config import MCP_SERVER_URL, OLLAMA_MODEL, OLLAMA_BASE_URL, ANTHROPIC_MODEL
 from .prompts import FINANCE_SYSTEM_PROMPT
 
 
-def create_llm() -> ChatOllama:
-    return ChatOllama(
-        model=OLLAMA_MODEL,
-        base_url=OLLAMA_BASE_URL,
-        temperature=0,
-        num_ctx=32768,
+def create_llm():
+    # return ChatOllama(
+    #     model=OLLAMA_MODEL,
+    #     base_url=OLLAMA_BASE_URL,
+    #     temperature=0,
+    #     num_ctx=32768,
+    # )
+    return ChatAnthropic(
+        model=ANTHROPIC_MODEL,
+        temperature=0
     )
 
 
