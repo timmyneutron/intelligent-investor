@@ -3,6 +3,7 @@ import { getCashflowTool } from './tools/getCashflow.js';
 import { getCashflowHistoryTool } from './tools/getCashflowHistory.js';
 import { getExpensesByCategoryTool } from './tools/getExpensesByCategory.js';
 import { getTransactionsTool } from './tools/getTransactions.js';
+import { getTransactionsTotalTool } from './tools/getTransactionsTotal.js';
 import { categorizeTransactionsTool } from './tools/categorizeTransactions.js';
 
 const server = new FastMCP({
@@ -15,6 +16,7 @@ server.addTool(getCashflowTool);
 server.addTool(getCashflowHistoryTool);
 server.addTool(getExpensesByCategoryTool);
 server.addTool(getTransactionsTool);
+server.addTool(getTransactionsTotalTool);
 server.addTool(categorizeTransactionsTool);
 
 server.start({

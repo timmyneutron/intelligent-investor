@@ -27,7 +27,7 @@ export default function ChatPanel({ onClose }: Props) {
         {messages.length === 0 && (
           <div className="chat-message assistant">
             Hello! I can help you understand your finances. Try asking me things like
-            "How much did I spend on groceries in December?" or "What was my largest expense?"
+            "How much did I spend on groceries in December?"
           </div>
         )}
         {messages.map((msg, i) => (

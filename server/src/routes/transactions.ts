@@ -1,6 +1,6 @@
 import { Router } from 'express';
 import { getDatabase } from '../db/connection.js';
-import { getTransactions, categorizeTransactions } from '../services/transactions.service.js';
+import { getTransactions, getTransactionsTotal, categorizeTransactions } from '../services/transactions.service.js';
 import type { CategoryUpdate } from '../types/index.js';
 
 const router = Router();
@@ -34,6 +34,25 @@ router.get('/transactions', (req, res) => {
       total_pages: Math.ceil(total / limit),
     },
   });
+});
+
+router.get('/transactions/total', (req, res) => {
+  const db = getDatabase();
+  const userId = parseInt(req.query.user_id as string) || 1;
+  const category = req.query.category as string | undefined;
+  const search = req.query.search as string | undefined;
+  const startDate = req.query.start_date as string | undefined;
+  const endDate = req.query.end_date as string | undefined;
+
+  const total = getTransactionsTotal(db, {
+    userId,
+    category,
+    search,
+    startDate,
+    endDate,
+  });
+
+  res.json({ total });
 });
 
 router.post('/transactions/categorize', (req, res) => {

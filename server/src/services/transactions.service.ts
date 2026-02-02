@@ -60,6 +60,50 @@ export function getTransactions(
   return { data, total };
 }
 
+interface GetTransactionsTotalParams {
+  userId: number;
+  category?: string;
+  search?: string;
+  startDate?: string;
+  endDate?: string;
+}
+
+export function getTransactionsTotal(
+  db: Database.Database,
+  params: GetTransactionsTotalParams
+): number {
+    const { userId, category, search, startDate, endDate } = params;
+
+  let whereClause = 'WHERE a.user_id = ?';
+  const queryParams: (string | number)[] = [userId];
+
+  if (category) {
+    whereClause += ' AND t.category = ?';
+    queryParams.push(category);
+  }
+  if (search) {
+    whereClause += ' AND t.description LIKE ?';
+    queryParams.push(`%${search}%`);
+  }
+  if (startDate) {
+    whereClause += ' AND t.date >= ?';
+    queryParams.push(startDate);
+  }
+  if (endDate) {
+    whereClause += ' AND t.date <= ?';
+    queryParams.push(endDate);
+  }
+
+  const sumQuery = `
+    SELECT SUM(t.amount) as total
+    FROM transactions t
+    JOIN accounts a ON t.account_id = a.id
+    ${whereClause}
+  `;
+  const total = db.prepare(sumQuery).get(...queryParams) as number;
+  return total;
+}
+
 export function categorizeTransactions(
   db: Database.Database,
   updates: CategoryUpdate[]
