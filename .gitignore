@@ -1,0 +1,13 @@
+node_modules/
+dist/
+.venv/
+__pycache__/
+*.pyc
+*.egg-info/
+*.db
+*.db-wal
+*.db-shm
+server/data/
+.env
+.DS_Store
+.claude

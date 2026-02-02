@@ -1,0 +1,11 @@
+{
+  "name": "intelligent-investor-v2",
+  "private": true,
+  "workspaces": ["client", "server", "mcp-server"],
+  "scripts": {
+    "dev:server": "npm run dev --workspace=server",
+    "dev:client": "npm run dev --workspace=client",
+    "dev:mcp": "npm run dev --workspace=mcp-server",
+    "dev:agent": "cd agent && .venv/bin/uvicorn src.main:app --reload --port 8000"
+  }
+}
