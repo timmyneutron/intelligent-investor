@@ -312,6 +312,22 @@ body {
   color: var(--color-accent);
 }
 
+.btn-danger-outline {
+  background: transparent;
+  border: 1px solid var(--color-border);
+  color: var(--color-text-secondary);
+}
+
+.btn-danger-outline:hover:not(:disabled) {
+  border-color: var(--color-expense);
+  color: var(--color-expense);
+}
+
+.btn-danger-outline:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
 .chat-fab {
   position: fixed;
   bottom: 24px;

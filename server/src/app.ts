@@ -21,4 +21,10 @@ app.get('/api/health', (_req, res) => {
   res.json({ status: 'ok' });
 });
 
+app.post('/api/reset', (_req, res) => {
+  const db = getDatabase();
+  resetDatabase(db);
+  res.json({ status: 'ok', message: 'Database reset to seed data' });
+});
+
 export default app;
