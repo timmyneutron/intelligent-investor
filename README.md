@@ -2,6 +2,10 @@
 
 A full-stack personal finance dashboard with an AI-powered chatbot and auto-categorization, built with React, Express, SQLite, and LangChain.
 
+## Demo
+
+View the demo video [here](https://www.youtube.com/watch?v=LUHECExDa5A)
+
 ## Architecture
 
 ![Architecture Diagram](docs/architecture.svg)
@@ -66,20 +70,6 @@ ollama pull qwen3:8b
 
 No API key is needed for local mode.
 
-### Environment Variables
-
-All environment variables are optional and have sensible defaults:
-
-| Variable | Default | Description |
-|---|---|---|
-| `ANTHROPIC_API_KEY` | (none) | Required for cloud mode |
-| `ANTHROPIC_MODEL` | `claude-3-haiku-20240307` | Anthropic model to use |
-| `OLLAMA_MODEL` | `qwen3:8b` | Ollama model to use in local mode |
-| `OLLAMA_BASE_URL` | `http://localhost:11434` | Ollama server URL |
-| `MCP_SERVER_URL` | `http://localhost:3001/mcp` | MCP server endpoint |
-
-Set these in `agent/.env` or export them in your shell.
-
 ## Running the App
 
 You need four terminals (or use a process manager). Start them in this order:
@@ -116,7 +106,7 @@ npm run dev:agent:local
 npm run dev:client
 ```
 
-Then open [http://localhost:5173](http://localhost:5173).
+Then open [http://localhost:5173](http://localhost:5173) in a web browser.
 
 ## Features
 
