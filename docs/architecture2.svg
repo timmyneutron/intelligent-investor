@@ -1,0 +1,107 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 670" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif">
+  <defs>
+    <filter id="shadow" x="-4%" y="-4%" width="108%" height="108%">
+      <feDropShadow dx="0" dy="2" stdDeviation="3" flood-opacity="0.15"/>
+    </filter>
+    <marker id="arrow" viewBox="0 0 10 7" refX="10" refY="3.5" markerWidth="10" markerHeight="7" orient="auto-start-reverse">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#64748b"/>
+    </marker>
+    <marker id="arrow-blue" viewBox="0 0 10 7" refX="10" refY="3.5" markerWidth="10" markerHeight="7" orient="auto-start-reverse">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#3b82f6"/>
+    </marker>
+    <marker id="arrow-green" viewBox="0 0 10 7" refX="10" refY="3.5" markerWidth="10" markerHeight="7" orient="auto-start-reverse">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#22c55e"/>
+    </marker>
+    <marker id="arrow-purple" viewBox="0 0 10 7" refX="10" refY="3.5" markerWidth="10" markerHeight="7" orient="auto-start-reverse">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#8b5cf6"/>
+    </marker>
+    <marker id="arrow-orange" viewBox="0 0 10 7" refX="10" refY="3.5" markerWidth="10" markerHeight="7" orient="auto-start-reverse">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#f97316"/>
+    </marker>
+  </defs>
+
+  <!-- Background -->
+  <rect width="900" height="670" rx="12" fill="#0f1117"/>
+
+  <!-- Title -->
+  <text x="450" y="30" text-anchor="middle" fill="#e4e6eb" font-size="20" font-weight="700">Architecture</text>
+
+  <!-- ====== Grouping boxes ====== -->
+
+  <!-- Proposed AI Architecture Group -->
+  <rect x="330" y="50" width="560" height="280" rx="10" fill="none" stroke="#e26969" stroke-width="2" stroke-dasharray="8,4" opacity="0.5"/>
+  <text x="345" y="75" text-anchor="left" fill="#e26969" font-size="13" font-weight="600">Proposed AI Architecture</text>
+
+  <!-- Existing FIT Architecture Group -->
+  <rect x="10" y="340" width="880" height="320" rx="10" fill="none" stroke="#3b82f6" stroke-width="2" stroke-dasharray="8,4" opacity="0.5"/>
+  <text x="25" y="365" text-anchor="left" fill="#60a5fa" font-size="13" font-weight="600">Existing FIT Architecture</text>
+
+  <!-- ====== ROW 1 ====== -->
+
+  <!-- LLM -->
+  <rect x="350" y="90" width="200" height="90" rx="10" fill="#1a1d27" stroke="#ec4899" stroke-width="1.5" filter="url(#shadow)"/>
+  <text x="450" y="140" text-anchor="middle" fill="#f472b6" font-size="16" font-weight="600" letter-spacing="0.5">LLM</text>
+
+  <!-- ====== ROW 2 ====== -->
+
+  <!-- AI Agent -->
+  <rect x="350" y="220" width="200" height="100" rx="10" fill="#1a1d27" stroke="#f97316" stroke-width="1.5" filter="url(#shadow)"/>
+  <text x="450" y="278" text-anchor="middle" fill="#fb923c" font-size="16" font-weight="600" letter-spacing="0.5">AI AGENT</text>
+
+  <!-- MCP Server -->
+  <rect x="670" y="220" width="200" height="100" rx="10" fill="#1a1d27" stroke="#8b5cf6" stroke-width="1.5" filter="url(#shadow)"/>
+  <text x="770" y="278" text-anchor="middle" fill="#a78bfa" font-size="16" font-weight="600" letter-spacing="0.5">MCP SERVER</text>
+
+  <!-- ====== ROW 3 ====== -->
+
+  <!-- Browser -->
+  <rect x="30" y="390" width="200" height="100" rx="10" fill="#1e293b" stroke="#334155" stroke-width="1.5" filter="url(#shadow)"/>
+  <text x="130" y="448" text-anchor="middle" fill="#94a3b8" font-size="16" font-weight="600" letter-spacing="0.5">USER</text>
+
+  <!-- Frontend -->
+  <rect x="350" y="390" width="200" height="100" rx="10" fill="#1a1d27" stroke="#3b82f6" stroke-width="1.5" filter="url(#shadow)"/>
+  <text x="450" y="448" text-anchor="middle" fill="#60a5fa" font-size="16" font-weight="600" letter-spacing="0.5">FRONTEND</text>
+
+  <!-- API Server -->
+  <rect x="670" y="390" width="200" height="100" rx="10" fill="#1a1d27" stroke="#22c55e" stroke-width="1.5" filter="url(#shadow)"/>
+  <text x="770" y="448" text-anchor="middle" fill="#4ade80" font-size="16" font-weight="600" letter-spacing="0.5">API SERVER</text>
+
+  <!-- ====== ROW 4 ====== -->
+
+  <!-- Database -->
+  <rect x="670" y="545" width="200" height="100" rx="10" fill="#1a1d27" stroke="#f59e0b" stroke-width="1.5" filter="url(#shadow)"/>
+  <text x="770" y="603" text-anchor="middle" fill="#fbbf24" font-size="16" font-weight="600" letter-spacing="0.5">DATABASE</text>
+
+  <!-- ====== ARROWS ====== -->
+
+  <!-- Browser -> Frontend -->
+  <line x1="230" y1="440" x2="348" y2="440" stroke="#64748b" stroke-width="1.5" marker-end="url(#arrow)"/>
+
+  <!-- Frontend -> Agent -->
+  <line x1="450" y1="390" x2="450" y2="322" stroke="#3b82f6" stroke-width="1.5" marker-end="url(#arrow-blue)"/>
+  <text x="467" y="364" fill="#60a5fa" font-size="10">HTTP API</text>
+  <text x="467" y="377" fill="#60a5fa" font-size="10">/chat</text>
+
+  <!-- Frontend -> API SERVER -->
+  <line x1="550" y1="440" x2="668" y2="440" stroke="#3b82f6" stroke-width="1.5" marker-end="url(#arrow-blue)"/>
+  <text x="609" y="432" text-anchor="middle" fill="#60a5fa" font-size="10">HTTP API</text>
+  <text x="609" y="452" text-anchor="middle" fill="#60a5fa" font-size="10">/transactions</text>
+  <text x="609" y="465" text-anchor="middle" fill="#60a5fa" font-size="10">/cashFlow</text>
+
+  <!-- Agent -> LLM -->
+  <line x1="450" y1="220" x2="450" y2="182" stroke="#f97316" stroke-width="1.5" marker-end="url(#arrow-orange)"/>
+  <text x="470" y="204" fill="#f97316" font-size="10">LLM API</text>
+
+  <!-- Agent -> MCP -->
+  <line x1="550" y1="270" x2="668" y2="270" stroke="#f97316" stroke-width="1.5" marker-end="url(#arrow-orange)"/>
+  <text x="609" y="262" text-anchor="middle" fill="#f97316" font-size="10">MCP tool call</text>
+
+  <!-- MCP -> API SERVER -->
+  <line x1="770" y1="320" x2="770" y2="388" stroke="#8b5cf6" stroke-width="1.5" marker-end="url(#arrow-purple)"/>
+  <text x="790" y="363" fill="#a78bfa" font-size="10">HTTP API</text>
+  <text x="790" y="378" fill="#a78bfa" font-size="10">/summary</text>
+
+  <!-- API SERVER -> Database -->
+  <line x1="770" y1="490" x2="770" y2="543" stroke="#22c55e" stroke-width="1.5" marker-end="url(#arrow-green)"/>
+  <text x="790" y="520" fill="#22c55e" font-size="10">SQL</text>
+</svg>

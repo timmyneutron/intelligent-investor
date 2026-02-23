@@ -1,0 +1,12 @@
+[project]
+name = "intelligent-investor-mcp"
+version = "1.0.0"
+description = "MCP server for the Intelligent Investor personal finance app"
+requires-python = ">=3.10"
+dependencies = [
+    "fastmcp>=2.0.0",
+    "httpx>=0.28.0",
+]
+
+[project.scripts]
+start = "src.server:main"
