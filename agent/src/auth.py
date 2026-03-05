@@ -1,25 +1,34 @@
-import os
-
-import jwt
+import httpx
 from fastapi import Request, HTTPException
 
-JWT_SECRET = os.environ.get("JWT_SECRET", "intelligent-investor-secret")
+from .config import AUTH_SERVER_URL
 
 
-def get_current_user(request: Request) -> dict:
-    """Verify JWT from the Authorization header and return the user payload."""
+async def get_current_user(request: Request) -> dict:
+    """Validate JWT by calling the auth server's /auth/me endpoint."""
     auth_header = request.headers.get("authorization", "")
     if not auth_header.startswith("Bearer "):
         raise HTTPException(
             status_code=401, detail="Missing or invalid Authorization header"
         )
 
-    token = auth_header.split(" ", 1)[1]
     try:
-        payload = jwt.decode(token, JWT_SECRET, algorithms=["HS256"])
-        return {"user_id": payload["user_id"], "username": payload["username"]}
-    except jwt.InvalidTokenError:
+        async with httpx.AsyncClient() as client:
+            response = await client.get(
+                f"{AUTH_SERVER_URL}/auth/me",
+                headers={"Authorization": auth_header},
+            )
+    except httpx.ConnectError:
+        raise HTTPException(status_code=502, detail="Auth server unavailable")
+
+    if response.status_code == 401:
         raise HTTPException(status_code=401, detail="Invalid or expired token")
+
+    if response.status_code != 200:
+        raise HTTPException(status_code=502, detail="Auth server error")
+
+    data = response.json()
+    return {"user_id": data["user_id"], "username": data["username"]}
 
 
 def get_token_from_request(request: Request) -> str:

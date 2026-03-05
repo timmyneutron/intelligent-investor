@@ -1,5 +1,7 @@
 from fastmcp import FastMCP
+from starlette.middleware import Middleware
 
+from .middleware import AuthMiddleware
 from .tools import (
     categorize_transactions,
     get_cashflow,
@@ -29,6 +31,7 @@ def main() -> None:
         host="0.0.0.0",
         port=3001,
         path="/mcp",
+        middleware=[Middleware(AuthMiddleware)],
     )
 
 
