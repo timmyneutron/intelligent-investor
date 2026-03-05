@@ -119,6 +119,10 @@ npm run dev:auth
 ```
 
 Then open [http://localhost:5173](http://localhost:5173) in a web browser.
+Test usernames/passwords:
+- alex/alex123
+- demo/demo123
+- admin/admin123
 
 ## Features
 
