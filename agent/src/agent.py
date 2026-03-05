@@ -27,20 +27,23 @@ def create_llm():
         )
 
 
-def get_mcp_config() -> dict:
-    return {
+def get_mcp_config(token: str | None = None) -> dict:
+    config: dict = {
         "finance": {
             "transport": "streamable_http",
             "url": MCP_SERVER_URL,
         }
     }
+    if token:
+        config["finance"]["headers"] = {"Authorization": f"Bearer {token}"}
+    return config
 
 
-async def run_agent_query(message: str) -> str:
+async def run_agent_query(message: str, token: str | None = None) -> str:
     """Run a single query through the finance agent and return the response."""
     llm = create_llm()
 
-    client = MultiServerMCPClient(get_mcp_config())
+    client = MultiServerMCPClient(get_mcp_config(token))
     tools = await client.get_tools()
 
     agent = create_react_agent(

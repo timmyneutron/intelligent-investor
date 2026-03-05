@@ -7,7 +7,7 @@ const router = Router();
 
 router.get('/transactions', (req, res) => {
   const db = getDatabase();
-  const userId = parseInt(req.query.user_id as string) || 1;
+  const userId = req.user!.user_id;
   const page = Math.max(1, parseInt(req.query.page as string) || 1);
   const limit = Math.min(100, Math.max(1, parseInt(req.query.limit as string) || 20));
   const category = req.query.category as string | undefined;
@@ -38,7 +38,7 @@ router.get('/transactions', (req, res) => {
 
 router.get('/transactions/total', (req, res) => {
   const db = getDatabase();
-  const userId = parseInt(req.query.user_id as string) || 1;
+  const userId = req.user!.user_id;
   const category = req.query.category as string | undefined;
   const search = req.query.search as string | undefined;
   const startDate = req.query.start_date as string | undefined;

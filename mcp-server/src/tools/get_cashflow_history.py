@@ -4,6 +4,7 @@ from typing import Literal
 from fastmcp import FastMCP
 
 from ..utils.api_client import api_get
+from ..utils.auth import get_current_token
 
 
 def register(mcp: FastMCP) -> None:
@@ -17,6 +18,7 @@ def register(mcp: FastMCP) -> None:
         start_date: str | None = None,
         end_date: str | None = None,
     ) -> str:
+        token = get_current_token()
         params: dict[str, str] = {
             "user_id": str(user_id),
             "granularity": granularity,
@@ -26,5 +28,5 @@ def register(mcp: FastMCP) -> None:
         if end_date:
             params["end_date"] = end_date
 
-        data = await api_get("/api/cashflow/history", params)
+        data = await api_get("/api/cashflow/history", params, token)
         return json.dumps(data)

@@ -1,7 +1,7 @@
 import json
 import re
 
-from fastapi import FastAPI, HTTPException
+from fastapi import Depends, FastAPI, HTTPException, Request
 from fastapi.middleware.cors import CORSMiddleware
 from langchain_ollama import ChatOllama
 from langchain_mcp_adapters.client import MultiServerMCPClient
@@ -14,6 +14,7 @@ from .models import (
     CategorySuggestion,
 )
 from .agent import run_agent_query, get_mcp_config, create_llm
+from .auth import get_current_user, get_token_from_request
 from .prompts import CATEGORIZATION_PROMPT_TEMPLATE
 
 app = FastAPI(title="Intelligent Investor Agent")
@@ -33,20 +34,29 @@ async def health():
 
 
 @app.post("/chat", response_model=ChatResponse)
-async def chat(request: ChatRequest):
+async def chat(
+    request: Request, body: ChatRequest, user: dict = Depends(get_current_user)
+):
     try:
-        response = await run_agent_query(request.message)
+        token = get_token_from_request(request)
+        response = await run_agent_query(body.message, token)
         return ChatResponse(response=response)
+    except HTTPException:
+        raise
     except Exception as e:
         print(e)
         raise HTTPException(status_code=500, detail=str(e))
 
 
 @app.post("/categorize", response_model=CategorizeResponse)
-async def categorize(request: CategorizeRequest):
+async def categorize(
+    request: Request, body: CategorizeRequest, user: dict = Depends(get_current_user)
+):
     try:
+        token = get_token_from_request(request)
+
         # Use MCP to fetch the uncategorized transactions
-        client = MultiServerMCPClient(get_mcp_config())
+        client = MultiServerMCPClient(get_mcp_config(token))
         tools = await client.get_tools()
 
         # Find the get_transactions tool
@@ -82,9 +92,9 @@ async def categorize(request: CategorizeRequest):
             return CategorizeResponse(suggestions=[])
 
         # Filter to only requested IDs if specified
-        if request.transaction_ids:
+        if body.transaction_ids:
             transactions = [
-                t for t in transactions if t["id"] in request.transaction_ids
+                t for t in transactions if t["id"] in body.transaction_ids
             ]
 
         # Use LLM to suggest categories

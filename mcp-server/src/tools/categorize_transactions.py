@@ -5,6 +5,7 @@ from fastmcp import FastMCP
 from pydantic import Field
 
 from ..utils.api_client import api_post
+from ..utils.auth import get_current_token
 
 
 def register(mcp: FastMCP) -> None:
@@ -22,5 +23,6 @@ def register(mcp: FastMCP) -> None:
             ),
         ],
     ) -> str:
-        data = await api_post("/api/transactions/categorize", {"updates": updates})
+        token = get_current_token()
+        data = await api_post("/api/transactions/categorize", {"updates": updates}, token)
         return json.dumps(data)

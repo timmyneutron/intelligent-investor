@@ -6,7 +6,7 @@ const router = Router();
 
 router.get('/expenses/by-category', (req, res) => {
   const db = getDatabase();
-  const userId = parseInt(req.query.user_id as string) || 1;
+  const userId = req.user!.user_id;
   const startDate = req.query.start_date as string | undefined;
   const endDate = req.query.end_date as string | undefined;
 

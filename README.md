@@ -12,9 +12,10 @@ View the demo video [here](https://www.youtube.com/watch?v=LUHECExDa5A)
 
 ```
 client/        React + Vite + TypeScript frontend (port 5173)
-server/        Express + TypeScript API with SQLite (port 3000)
-mcp-server/    FastMCP tool server (port 3001)
 agent/         Python LangChain agent with FastAPI (port 8000)
+mcp-server/    FastMCP tool server (port 3001)
+server/        Express + TypeScript API with SQLite (port 3000)
+auth-server/   Express + TypeScript auth server (port 3002)
 ```
 
 The AI agent connects to the MCP server to query your financial data, and exposes a FastAPI gateway that the React frontend calls for chat and auto-categorization.
@@ -27,7 +28,7 @@ The AI agent connects to the MCP server to query your financial data, and expose
 
 ## Install Dependencies
 
-### Node (client, server, mcp-server)
+### Node (client, server, auth-server)
 
 From the project root:
 
@@ -35,12 +36,18 @@ From the project root:
 npm install
 ```
 
-This installs dependencies for all three npm workspaces (`client`, `server`, `mcp-server`).
+This installs dependencies for all three npm workspaces (`client`, `server`, `auth-server`).
 
-### Python (agent)
+### Python (agent, mcp-server)
 
 ```bash
 cd agent
+python -m venv .venv
+source .venv/bin/activate
+pip install -e .
+```
+
+cd mcp-server
 python -m venv .venv
 source .venv/bin/activate
 pip install -e .
@@ -104,6 +111,11 @@ npm run dev:agent:local
 
 ```bash
 npm run dev:client
+```
+
+### 5. Auth Server
+```bash
+npm run dev:auth
 ```
 
 Then open [http://localhost:5173](http://localhost:5173) in a web browser.

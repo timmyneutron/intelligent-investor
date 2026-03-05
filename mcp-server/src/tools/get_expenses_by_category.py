@@ -3,6 +3,7 @@ import json
 from fastmcp import FastMCP
 
 from ..utils.api_client import api_get
+from ..utils.auth import get_current_token
 
 
 def register(mcp: FastMCP) -> None:
@@ -16,11 +17,12 @@ def register(mcp: FastMCP) -> None:
         start_date: str | None = None,
         end_date: str | None = None,
     ) -> str:
+        token = get_current_token()
         params: dict[str, str] = {"user_id": str(user_id)}
         if start_date:
             params["start_date"] = start_date
         if end_date:
             params["end_date"] = end_date
 
-        data = await api_get("/api/expenses/by-category", params)
+        data = await api_get("/api/expenses/by-category", params, token)
         return json.dumps(data)
