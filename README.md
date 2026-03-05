@@ -12,13 +12,13 @@ View the demo video [here](https://www.youtube.com/watch?v=LUHECExDa5A)
 
 ```
 client/        React + Vite + TypeScript frontend (port 5173)
+auth-server/   Express + TypeScript auth server (port 3002)
 agent/         Python LangChain agent with FastAPI (port 8000)
 mcp-server/    FastMCP tool server (port 3001)
 server/        Express + TypeScript API with SQLite (port 3000)
-auth-server/   Express + TypeScript auth server (port 3002)
 ```
 
-The AI agent connects to the MCP server to query your financial data, and exposes a FastAPI gateway that the React frontend calls for chat and auto-categorization.
+The React frontend authenticates users via the auth server, which issues JWTs. The AI agent and MCP server both validate incoming JWTs by calling the auth server's `GET /auth/me` endpoint. The agent connects to the MCP server to query financial data, and exposes a FastAPI gateway that the React frontend calls for chat and auto-categorization.
 
 ## Prerequisites
 
@@ -47,6 +47,7 @@ source .venv/bin/activate
 pip install -e .
 ```
 
+```bash
 cd mcp-server
 python -m venv .venv
 source .venv/bin/activate
@@ -79,21 +80,26 @@ No API key is needed for local mode.
 
 ## Running the App
 
-You need four terminals (or use a process manager). Start them in this order:
+You need five terminals (or use a process manager). Start them in this order:
 
-### 1. API Server
+### 1. Auth Server
+```bash
+npm run dev:auth
+```
+
+### 2. API Server
 
 ```bash
 npm run dev:server
 ```
 
-### 2. MCP Server
+### 3. MCP Server
 
 ```bash
 npm run dev:mcp
 ```
 
-### 3. AI Agent
+### 4. AI Agent
 
 Using Anthropic cloud LLM (default):
 
@@ -107,22 +113,21 @@ Using local Ollama LLM:
 npm run dev:agent:local
 ```
 
-### 4. Frontend
+### 5. Frontend
 
 ```bash
 npm run dev:client
 ```
 
-### 5. Auth Server
-```bash
-npm run dev:auth
-```
-
 Then open [http://localhost:5173](http://localhost:5173) in a web browser.
+
 Test usernames/passwords:
 - alex/alex123
+- jordan/jordan123
 - demo/demo123
 - admin/admin123
+
+Note: only `alex` and `jordan` have financial data seeded.
 
 ## Features
 
