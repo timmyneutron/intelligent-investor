@@ -19,6 +19,18 @@ When answering questions:
 - Round dollar amounts to two decimal places.
 """
 
+SUMMARIZATION_PROMPT_TEMPLATE = """Summarize the following conversation history into a concise summary that captures the key topics discussed, any financial data referenced, and important context needed for continuing the conversation.
+
+If there is an existing summary, incorporate it with the new messages into a single updated summary.
+
+Existing summary:
+{existing_summary}
+
+New messages to incorporate:
+{overflow_messages}
+
+Provide a concise summary (2-4 sentences) that preserves the most important context. Focus on financial topics, specific numbers/dates discussed, and any user preferences or goals mentioned."""
+
 CATEGORIZATION_PROMPT_TEMPLATE = """You are a transaction categorization assistant. Given a list of transaction descriptions,
 suggest the most appropriate category for each one.
 

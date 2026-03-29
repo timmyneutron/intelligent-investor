@@ -17,11 +17,20 @@ function handleUnauthorized(response: Response): void {
   }
 }
 
-export async function sendChatMessage(message: string): Promise<string> {
+export interface ChatApiResponse {
+  response: string;
+  summary: string | null;
+}
+
+export async function sendChatMessage(
+  message: string,
+  history: Array<{ role: string; content: string }>,
+  summary: string | null,
+): Promise<ChatApiResponse> {
   const response = await fetch(`${AGENT_BASE_URL}/chat`, {
     method: 'POST',
     headers: getAuthHeaders(),
-    body: JSON.stringify({ message }),
+    body: JSON.stringify({ message, history, summary }),
   });
 
   if (!response.ok) {
@@ -30,7 +39,7 @@ export async function sendChatMessage(message: string): Promise<string> {
   }
 
   const data = await response.json();
-  return data.response;
+  return { response: data.response, summary: data.summary ?? null };
 }
 
 export async function requestCategorization(
