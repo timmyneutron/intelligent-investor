@@ -3,6 +3,7 @@ from starlette.middleware import Middleware
 
 from .middleware import AuthMiddleware
 from .tools import (
+    calculate,
     categorize_transactions,
     get_cashflow,
     get_cashflow_history,
@@ -16,6 +17,7 @@ mcp = FastMCP(
     "Provides tools to query cashflow, expenses, transactions, and update transaction categories.",
 )
 
+calculate.register(mcp)
 get_cashflow.register(mcp)
 get_cashflow_history.register(mcp)
 get_expenses_by_category.register(mcp)
