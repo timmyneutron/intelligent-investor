@@ -6,6 +6,7 @@ A full-stack personal finance dashboard with an AI-powered chatbot and auto-cate
 
 Version 1: https://youtu.be/LUHECExDa5A
  - Includes chatbot, auto-categorization, and comparison of local vs. cloud LLMs
+
 Version 2: https://youtu.be/JrqgGczul8Q
  - Includes an auth server and JWT authentication
 
