@@ -7,7 +7,6 @@ from .tools import (
     get_cashflow,
     get_cashflow_history,
     get_expenses_by_category,
-    get_transactions,
     get_transactions_total,
 )
 
@@ -20,7 +19,6 @@ mcp = FastMCP(
 get_cashflow.register(mcp)
 get_cashflow_history.register(mcp)
 get_expenses_by_category.register(mcp)
-get_transactions.register(mcp)
 get_transactions_total.register(mcp)
 categorize_transactions.register(mcp)
 
