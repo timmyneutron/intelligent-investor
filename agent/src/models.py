@@ -6,15 +6,23 @@ class MessageItem(BaseModel):
     content: str
 
 
+class ConversationState(BaseModel):
+    current_category: str | None = None
+    current_time_range: str | None = None
+    last_query_type: str | None = None
+
+
 class ChatRequest(BaseModel):
     message: str
     history: list[MessageItem] = []
     summary: str | None = None
+    conversation_state: ConversationState | None = None
 
 
 class ChatResponse(BaseModel):
     response: str
     summary: str | None = None
+    conversation_state: ConversationState | None = None
 
 
 class CategorizeRequest(BaseModel):

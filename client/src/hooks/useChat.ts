@@ -1,5 +1,6 @@
 import { useState, useCallback, useRef } from 'react';
 import { sendChatMessage } from '../api/agent';
+import type { ConversationState } from '../api/agent';
 import type { ChatMessage } from '../types';
 
 const CONTEXT_WINDOW_SIZE = 10;
@@ -8,6 +9,7 @@ export function useChat() {
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [loading, setLoading] = useState(false);
   const summaryRef = useRef<string | null>(null);
+  const conversationStateRef = useRef<ConversationState | null>(null);
 
   const sendMessage = useCallback(async (content: string) => {
     const userMessage: ChatMessage = { role: 'user', content };
@@ -23,10 +25,18 @@ export function useChat() {
         content: m.content,
       }));
 
-      const result = await sendChatMessage(content, history, summaryRef.current);
+      const result = await sendChatMessage(
+        content,
+        history,
+        summaryRef.current,
+        conversationStateRef.current,
+      );
 
       if (result.summary !== null) {
         summaryRef.current = result.summary;
+      }
+      if (result.conversation_state !== null) {
+        conversationStateRef.current = result.conversation_state;
       }
 
       const assistantMessage: ChatMessage = { role: 'assistant', content: result.response };

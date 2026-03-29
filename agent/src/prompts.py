@@ -17,6 +17,22 @@ When answering questions:
 - Do NOT pass "expenses" as a category filter. Only use actual category names listed above.
 - When asked about the largest expense, use get_transactions with a large limit and NO category filter, then find the most negative amount.
 - Round dollar amounts to two decimal places.
+
+CONVERSATION STATE TRACKING:
+At the end of every response, you MUST include a <conversation_state> block that captures
+the current context of the conversation. This helps maintain continuity across messages.
+Update the fields based on what the user is currently discussing. Set fields to null if
+they are no longer relevant.
+
+Format:
+<conversation_state>
+{"current_category": "groceries", "current_time_range": "December 2025", "last_query_type": "total_spending"}
+</conversation_state>
+
+Fields:
+- current_category: The spending/income category being discussed (e.g. "groceries", "dining", "salary"), or null.
+- current_time_range: The time period being discussed (e.g. "December 2025", "Q1 2026", "last 3 months"), or null.
+- last_query_type: The type of query just answered (e.g. "total_spending", "transaction_list", "comparison", "largest_expense", "category_breakdown", "trend_analysis"), or null.
 """
 
 SUMMARIZATION_PROMPT_TEMPLATE = """Summarize the following conversation history into a concise summary that captures the key topics discussed, any financial data referenced, and important context needed for continuing the conversation.

@@ -3,9 +3,12 @@ from langchain_ollama import ChatOllama
 from langchain_mcp_adapters.client import MultiServerMCPClient
 from langgraph.prebuilt import create_react_agent
 
+import json
+import re
+
 from . import config
 from .config import MCP_SERVER_URL, OLLAMA_MODEL, OLLAMA_BASE_URL, ANTHROPIC_MODEL, USE_LOCAL_LLM
-from .models import MessageItem
+from .models import ConversationState, MessageItem
 from .prompts import FINANCE_SYSTEM_PROMPT, SUMMARIZATION_PROMPT_TEMPLATE
 
 CONTEXT_WINDOW_SIZE = 10
@@ -45,15 +48,21 @@ def _build_message_tuples(
     history: list[MessageItem],
     summary: str | None,
     current_message: str,
+    conversation_state: ConversationState | None = None,
 ) -> list[tuple[str, str]]:
-    """Build the message list for the agent from summary + history + current message."""
+    """Build the message list for the agent from summary + state + history + current message."""
     messages: list[tuple[str, str]] = []
 
+    context_parts: list[str] = []
     if summary:
-        messages.append((
-            "user",
-            f"[Conversation summary so far: {summary}]",
-        ))
+        context_parts.append(f"Conversation summary so far: {summary}")
+    if conversation_state:
+        state_dict = conversation_state.model_dump(exclude_none=True)
+        if state_dict:
+            context_parts.append(f"Current conversation state: {json.dumps(state_dict)}")
+
+    if context_parts:
+        messages.append(("user", f"[{' | '.join(context_parts)}]"))
         messages.append((
             "assistant",
             "Understood, I have the context from our previous conversation.",
@@ -64,6 +73,27 @@ def _build_message_tuples(
 
     messages.append(("user", current_message))
     return messages
+
+
+def _parse_conversation_state(content: str) -> tuple[str, ConversationState | None]:
+    """Extract a <conversation_state> JSON block from the response, returning cleaned content and state."""
+    match = re.search(
+        r"<conversation_state>\s*(\{.*?\})\s*</conversation_state>",
+        content,
+        re.DOTALL,
+    )
+    if not match:
+        return content, None
+
+    cleaned = content[:match.start()] + content[match.end():]
+    cleaned = cleaned.strip()
+
+    try:
+        state_data = json.loads(match.group(1))
+        state = ConversationState(**state_data)
+        return cleaned, state
+    except (json.JSONDecodeError, ValueError):
+        return cleaned, None
 
 
 async def _summarize_messages(
@@ -91,10 +121,11 @@ async def run_agent_query(
     token: str | None = None,
     history: list[MessageItem] | None = None,
     summary: str | None = None,
-) -> tuple[str, str | None]:
+    conversation_state: ConversationState | None = None,
+) -> tuple[str, str | None, ConversationState | None]:
     """Run a query through the finance agent with conversation context.
 
-    Returns a tuple of (response, updated_summary).
+    Returns a tuple of (response, updated_summary, updated_conversation_state).
     """
     llm = create_llm()
     history = history or []
@@ -106,7 +137,7 @@ async def run_agent_query(
         history = history[-CONTEXT_WINDOW_SIZE:]
         updated_summary = await _summarize_messages(llm, summary, overflow)
 
-    messages = _build_message_tuples(history, updated_summary, message)
+    messages = _build_message_tuples(history, updated_summary, message, conversation_state)
 
     client = MultiServerMCPClient(get_mcp_config(token))
     tools = await client.get_tools()
@@ -127,4 +158,11 @@ async def run_agent_query(
     if "</think>" in content:
         content = content.split("</think>")[-1].strip()
 
-    return content, updated_summary
+    # Parse out conversation state update from the response
+    content, updated_state = _parse_conversation_state(content)
+
+    # Fall back to the incoming state if the LLM didn't produce an update
+    if updated_state is None:
+        updated_state = conversation_state
+
+    return content, updated_summary, updated_state

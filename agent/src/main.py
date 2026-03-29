@@ -39,10 +39,18 @@ async def chat(
 ):
     try:
         token = get_token_from_request(request)
-        response, updated_summary = await run_agent_query(
-            body.message, token, history=body.history, summary=body.summary
+        response, updated_summary, updated_state = await run_agent_query(
+            body.message,
+            token,
+            history=body.history,
+            summary=body.summary,
+            conversation_state=body.conversation_state,
         )
-        return ChatResponse(response=response, summary=updated_summary)
+        return ChatResponse(
+            response=response,
+            summary=updated_summary,
+            conversation_state=updated_state,
+        )
     except HTTPException:
         raise
     except Exception as e:
